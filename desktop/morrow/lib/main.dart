@@ -16,6 +16,7 @@ import 'armor_item.dart';
 import 'game_text.dart';
 import 'preset_page.dart';
 import 'review_body.dart';
+import 'corpse_cleanup_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -68,6 +69,7 @@ class _WorkbenchState extends State<Workbench> {
     'Illuminate': '光能族',
     'SEAF': '超级地球部队',
     'Spawning': '敌人生成',
+    'Corpses': '尸体清理',
     'Records': '数据库',
   };
   static const navigation = {
@@ -77,6 +79,7 @@ class _WorkbenchState extends State<Workbench> {
     'Armors': ('护甲', Icons.shield_outlined),
     'Helldiver': ('潜兵', Icons.person_outline),
     'Terminids': ('敌人', Icons.pest_control_outlined),
+    'Corpses': ('尸体清理', Icons.cleaning_services_outlined),
     'Records': ('数据与预设', Icons.storage_outlined),
     'Settings': ('设置', Icons.tune),
   };
@@ -127,8 +130,11 @@ class _WorkbenchState extends State<Workbench> {
       busy = true;
     });
     try {
-      if (['Armor', 'Presets', 'Settings'].contains(key)) {
-        setState(() => busy = false);
+      if (['Armor', 'Presets', 'Settings', 'Corpses'].contains(key)) {
+        setState(() {
+          busy = false;
+          if (key == 'Corpses') status = '清理设置随「写入游戏」生效';
+        });
         return;
       }
       await backend.call('editor_mode', [
@@ -1177,7 +1183,7 @@ class _WorkbenchState extends State<Workbench> {
                                   ],
                                 ),
                               ),
-                            if (tab != 'Settings')
+                            if (tab != 'Settings' && tab != 'Corpses')
                               TextField(
                                 controller: search,
                                 decoration: InputDecoration(
@@ -1212,6 +1218,11 @@ class _WorkbenchState extends State<Workbench> {
                                   ),
                                   child: tab == 'Settings'
                                       ? settingsPage()
+                                      : tab == 'Corpses'
+                                      ? CorpseCleanupPage(
+                                          backend: backend,
+                                          onError: showError,
+                                        )
                                       : tab == 'Armor'
                                       ? ArmorPage(
                                           backend: backend,

@@ -25,6 +25,9 @@ def main():
  for name in ('MORROW-LICENSE','NOTICE.md'):shutil.copy2(ROOT/'desktop/morrow'/name,a.output/'licenses'/name)
  shutil.copy2(ROOT/'desktop/morrow/assets/fonts/MiSans-font-notice.txt',a.output/'licenses/MiSans-font-notice.txt')
  shutil.copy2(ROOT/'LICENSE',a.output/'LICENSE')
+ shutil.copy2(ROOT/'README.md',a.output/'README.md')
+ (a.output/'docs').mkdir()
+ shutil.copy2(ROOT/'docs/corpse-cleanup.md',a.output/'docs/corpse-cleanup.md')
  manifest={'version':'4.6.0','status':'release','ui':'Morrow / Flutter','host':'Rust + compatibility Lua engine','core_version':'4.6.0','files':{str(f.relative_to(a.output)).replace('\\','/'):hashlib.sha256(f.read_bytes()).hexdigest() for f in a.output.rglob('*')if f.is_file()}}
  (a.output/'manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2),encoding='utf8')
  with zipfile.ZipFile(a.output.with_suffix('.zip'),'w',zipfile.ZIP_DEFLATED,compresslevel=9)as z:

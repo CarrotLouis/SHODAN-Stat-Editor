@@ -118,7 +118,7 @@ void main() {
       Workbench(backend: FakeBackend(), persistAppearance: false),
     );
     await tester.pumpAndSettle();
-    expect(find.byType(ListTile), findsNWidgets(8));
+    expect(find.byType(ListTile), findsNWidgets(9));
     expect(find.widgetWithText(ChoiceChip, '配件'), findsOneWidget);
     await tester.tap(find.widgetWithText(ChoiceChip, '配件'));
     await tester.pumpAndSettle();

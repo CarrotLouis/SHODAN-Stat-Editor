@@ -8,6 +8,8 @@
 
 《绝地潜兵 2》中文离线数值编辑器 · Windows x64
 
+> 本分支已整合“尸体清理”，位于左侧“敌人”之后，支持快速清场与独立碎块清理。使用本分支构建或随说明交付的整合包；下方上游发行版下载链接对应原项目构建。源码构建方式见 [Morrow 开发说明](desktop/morrow/README.md)。
+
 [![最新发行版](https://img.shields.io/github/v/release/127MU/SHODAN-Stat-Editor?label=最新版本&color=1677ff)](https://github.com/127MU/SHODAN-Stat-Editor/releases/latest)
 [![许可](https://img.shields.io/badge/License-GPL--3.0-0b8b6b)](LICENSE)
 [![界面](https://img.shields.io/badge/UI-Morrow-8b5cf6)](https://github.com/StarrySky7D4/morrow)
@@ -72,11 +74,14 @@
 | 🛡️ 护甲组合 | 多选被动，设置保留原生被动、叠加策略，并在弹窗中编辑可用数值 |
 | 🧍 潜兵数值 | 调整生命值、部位、移动、耐力等现有可解析字段 |
 | 👾 敌人与生成 | 查看敌人单位，以及支持的增援、巡逻与生成参数 |
+| 🧹 尸体清理 | 在“敌人”之后选择快速清场、小型单位快速消失及独立碎块清理；随“写入游戏”统一安装 |
 | 🗂️ 数据库与预设 | 直接编辑弹丸、爆炸、电弧等记录；管理装备预设与全局方案 |
 | 🎨 外观与设置 | 深浅主题、背景图片、字体、侧边栏、三列／四列、卡片材质与动画设置 |
 
 
 页面按实际组件生成，**不是每件装备都拥有表中所有参数**。锁定、制导、喷流、过热、粘附等选项只会在对应记录存在时出现。
+
+尸体清理可组合“约 6 秒清场＋碎块 2 秒寿命”，模式和恢复只改变对应清理字段。使用前自动核对原版数据和目标表布局，详细范围、来源及验证方式见[尸体清理说明](docs/corpse-cleanup.md)。
 
 <details>
 <summary><b>🛡️ 看看护甲组合界面</b></summary>

@@ -5,7 +5,7 @@ ROOT=Path(__file__).resolve().parents[1]
 VERSION='4.5.1-r2'
 CORE_VERSION='4.5.1'
 CORE_COMMIT='f14a20991dc5c92eefc2f36996e5191311c9ba22'
-MODULES=('stat_editor','host','hostdata','install','engine_shim','gamedata','update','armory','armory_data','armor_ui','armor_presets','armor_baseline','text_input','zh_extra','zh_game','zh_params','zh_reference','zh_hashes','zh_ui','theme','layout','desktop_features','edit_history','reference_chain','gameplay_resources','ragdoll_recipe','vehicles','mod_merge','extra_stratagem_guard','res_patch','state_machine')
+MODULES=('stat_editor','host','hostdata','install','engine_shim','gamedata','update','armory','armory_data','armor_ui','armor_presets','armor_baseline','text_input','zh_extra','zh_game','zh_params','zh_reference','zh_hashes','zh_ui','theme','layout','desktop_features','edit_history','reference_chain','gameplay_resources','ragdoll_recipe','corpse_cleanup','corpse_recipe','vehicles','mod_merge','extra_stratagem_guard','res_patch','state_machine')
 def pack(folder,dest,allowed):
     with zipfile.ZipFile(dest,'w',zipfile.ZIP_DEFLATED,compresslevel=9) as archive:
         for relative in sorted(allowed):archive.write(folder/relative,folder.name+'/'+relative)

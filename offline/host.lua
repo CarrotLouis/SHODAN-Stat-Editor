@@ -218,6 +218,7 @@ local function main()
     ARM.init(AR, D, I.home)
     ARM.on_change = function() state.writes = (state.writes or 0) + 1 end
     AR.frame = ARM.frame
+    local corpses -- Initialized with the desktop API after queued values are loaded.
     ARM.tabs=state.desktop_tabs;ARM.navigate=state.desktop_navigate
     ARM.tr=state.tr;ARM.transition=shim.transition
     state.open_armor = AR.show
@@ -377,6 +378,8 @@ local function main()
     -- ------------------------------------------------------------ install / restore
     local write_succeeded=false
     local function install()
+        local corpse_error=corpses and corpses:validate()
+        if corpse_error then say(corpse_error,WARN);return end
         local extra_error=state.desktop and state.desktop.extra_validate and state.desktop.extra_validate()
         if extra_error then say(extra_error,WARN);return end
         if not ARM.flush() then say('请先修正护甲数值输入。',WARN);return end
@@ -385,6 +388,7 @@ local function main()
         busy('Installing: finding what changed...')
         local dropped=state.load_donors and state.load_donors() or 0
         local changes, problems = D.diff()
+        if corpses then corpses:include_change(changes)end
         if problems and #problems > 0 then
             for _, c in ipairs(changes) do G.free(c.plain) end
             bar.busy = nil
@@ -572,6 +576,7 @@ local function main()
         bar.base=state.writes or 0
         ARM.load_values()
         local B=state.desktop
+        corpses=require('corpse_cleanup').attach(B,D,I,function()state.writes=(state.writes or 0)+1 end)
         B.game=game;B.armor_list=AR.list;B.armor_groups=AR.groups
         B.armor_rows=D.armor_values
         require('armor_presets').attach(B,D,ARM,AR)
@@ -615,6 +620,7 @@ local function main()
         B.install_preview=function()
             local extra_error,extra_warnings
             if B.extra_validate then extra_error,extra_warnings=B.extra_validate() end
+            extra_error=extra_error or (corpses and corpses:validate())
             assert(not extra_error,extra_error)
             local entries=B.pending_preview()
             for _,a in ipairs(AR.list) do
@@ -636,6 +642,7 @@ local function main()
             local dropped=state.load_donors and state.load_donors() or 0
             if dropped>0 then extra_warnings=extra_warnings or {};extra_warnings[#extra_warnings+1]=tostring(dropped).." 项资源超过载入上限，可能缺少射弹轨迹或无法始终携带。"end
             local changes,problems=D.diff()
+            if corpses then corpses:include_change(changes)end
             local ok,why=pcall(function()
                 local stacks,off,policy=AR.selection(state.stacks and state.stacks() or {},state.own_off and state.own_off() or {},D.passives())
                 local stacked,reason=D.stack(changes,stacks,log,off,policy);assert(stacked,reason)
